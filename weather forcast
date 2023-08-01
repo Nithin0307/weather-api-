@@ -1,0 +1,70 @@
+import requests
+
+API_URL = "https://samples.openweathermap.org/data/2.5/forecast/hourly?q=London,us&appid=b6907d289e10d714a6e88b30761fae22"
+
+def get_weather(date):
+    response = requests.get(API_URL)
+    if response.status_code == 200:
+        data = response.json()
+        for forecast in data['list']:
+            if forecast['dt_txt'].startswith(date):
+                temperature = forecast['main']['temp']
+                print(f"Temperature on {date}: {temperature}°C")
+                return
+        print(f"Temperature data not found for {date}.")
+    else:
+        print("Failed to fetch weather data for the given date.")
+
+def get_wind_speed(date):
+    response = requests.get(API_URL)
+    if response.status_code == 200:
+        data = response.json()
+        for forecast in data['list']:
+            if forecast['dt_txt'].startswith(date):
+                wind_speed = forecast['wind']['speed']
+                print(f"Wind Speed on {date}: {wind_speed} m/s")
+                return
+        print(f"Wind speed data not found for {date}.")
+    else:
+        print("Failed to fetch wind speed data for the given date.")
+
+def get_pressure(date):
+    response = requests.get(API_URL)
+    if response.status_code == 200:
+        data = response.json()
+        for forecast in data['list']:
+            if forecast['dt_txt'].startswith(date):
+                pressure = forecast['main']['pressure']
+                print(f"Pressure on {date}: {pressure} hPa")
+                return
+        print(f"Pressure data not found for {date}.")
+    else:
+        print("Failed to fetch pressure data for the given date.")
+
+def main():
+    while True:
+        print("\nOptions:")
+        print("1. Get weather")
+        print("2. Get Wind Speed")
+        print("3. Get Pressure")
+        print("0. Exit")
+
+        option = input("Enter your choice (0-3): ")
+
+        if option == "1":
+            date = input("Enter the date (YYYY-MM-DD): ")
+            get_weather(date)
+        elif option == "2":
+            date = input("Enter the date (YYYY-MM-DD): ")
+            get_wind_speed(date)
+        elif option == "3":
+            date = input("Enter the date (YYYY-MM-DD): ")
+            get_pressure(date)
+        elif option == "0":
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid option. Please choose a valid option (0-3).")
+
+if __name__ == "__main__":
+    main()
